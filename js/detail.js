@@ -1,16 +1,19 @@
-// Halaman detail kenangan: lihat, edit (pemilik), hapus (pemilik atau admin)
+// Halaman detail kenangan: lihat, edit, hapus, dan komentar
 (async function () {
   'use strict';
 
   var ctx = await PH.requireAuth();
   if (!ctx) return;
-  PH.renderHeader(ctx);
+  PH.renderHeader(ctx, 'feed');
 
   var statusBox = document.getElementById('status');
   var detail = document.getElementById('detail');
   var view = document.getElementById('view');
   var editForm = document.getElementById('edit-form');
   var dialog = document.getElementById('confirm-dialog');
+  var commentList = document.getElementById('comment-list');
+  var commentForm = document.getElementById('comment-form');
+  var commentInput = document.getElementById('comment-input');
 
   var id = new URLSearchParams(location.search).get('id');
   var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -41,6 +44,46 @@
     document.getElementById('actions').hidden = !(isOwner || isAdmin);
   }
 
+  function renderComments(comments) {
+    if (!commentList) return;
+    commentList.textContent = '';
+    if (!comments || !comments.length) {
+      commentList.appendChild(PH.el('div', { class: 'status', text: 'Belum ada komentar.' }));
+      return;
+    }
+    comments.forEach(function (item) {
+      var writer = item.profiles || item.profile || {};
+      var displayName = writer.display_name || 'Anggota';
+      var initial = displayName.slice(0, 1).toUpperCase();
+      commentList.appendChild(PH.el('div', { class: 'comment-item' }, [
+        PH.el('div', { class: 'comment-avatar', text: initial }),
+        PH.el('div', { class: 'comment-body' }, [
+          PH.el('strong', { text: displayName }),
+          PH.el('time', { text: PH.formatRelativeTime(item.created_at) }),
+          PH.el('div', { text: item.message || '' })
+        ])
+      ]));
+    });
+  }
+
+  async function loadComments() {
+    if (!commentList) return;
+    try {
+      var r = await PH.sb.from('photo_comments').select('id,message,created_at,profiles(display_name)').eq('photo_id', id).order('created_at', { ascending: true });
+      if (r.error) {
+        if (r.error.code === '42P01') {
+          renderComments([]);
+          return;
+        }
+        throw r.error;
+      }
+      renderComments(r.data || []);
+    } catch (e) {
+      console.warn('Komentar tidak tersedia:', e);
+      renderComments([]);
+    }
+  }
+
   async function load() {
     PH.showStatus(statusBox, 'loading', 'Memuat kenangan…');
     try {
@@ -59,6 +102,7 @@
       img.alt = PH.displayTitle(photo);
 
       render();
+      await loadComments();
       PH.clearStatus(statusBox);
       detail.hidden = false;
     } catch (e) {
@@ -67,7 +111,6 @@
     }
   }
 
-  // ----- Edit -----
   document.getElementById('btn-edit').addEventListener('click', function () {
     document.getElementById('e-title').value = photo.title || '';
     document.getElementById('e-caption').value = photo.caption || '';
@@ -98,10 +141,7 @@
     save.disabled = true;
     save.textContent = 'Menyimpan…';
     try {
-      var r = await PH.sb.from('photos')
-        .update({ title: title, caption: caption, taken_on: taken })
-        .eq('id', id)
-        .select('id,title,caption,taken_on');
+      var r = await PH.sb.from('photos').update({ title: title, caption: caption, taken_on: taken }).eq('id', id).select('id,title,caption,taken_on');
       if (r.error) throw r.error;
       if (!r.data || r.data.length !== 1) throw new Error('Tidak punya izin mengubah kenangan ini.');
 
@@ -121,7 +161,6 @@
     }
   });
 
-  // ----- Hapus (dengan konfirmasi) -----
   document.getElementById('btn-delete').addEventListener('click', function () {
     if (dialog.showModal) dialog.showModal();
     else if (window.confirm('Hapus kenangan ini secara permanen?')) doDelete();
@@ -138,18 +177,47 @@
       if (r.error) throw r.error;
       if (!r.data || r.data.length !== 1) throw new Error('Tidak punya izin menghapus kenangan ini.');
 
-      // Hapus juga file fotonya. Jika gagal, data tetap sudah terhapus; file sisa tidak terlihat siapa pun.
       var rm = await PH.sb.storage.from('photos').remove([photo.image_path, photo.thumb_path]);
       if (rm.error) console.warn('File foto gagal dihapus dari penyimpanan:', rm.error);
 
       PH.toast('Kenangan dihapus.', 'success');
-      location.replace('index.html');
+      location.replace('feed.html');
     } catch (err) {
       console.error(err);
       PH.toast('Gagal menghapus. Coba lagi.', 'error');
       btn.disabled = false;
       btn.textContent = 'Hapus';
     }
+  }
+
+  if (commentForm) {
+    commentForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var value = commentInput.value.trim();
+      if (!value) return;
+      commentInput.disabled = true;
+      commentInput.value = '';
+      try {
+        var r = await PH.sb.from('photo_comments').insert({ photo_id: id, user_id: ctx.user.id, message: value }).select('id,message,created_at,profiles(display_name)');
+        if (r.error) {
+          if (r.error.code === '42P01') {
+            var cached = JSON.parse(localStorage.getItem('ph_comments') || '{}');
+            cached[id] = cached[id] || [];
+            cached[id].push({ message: value, created_at: new Date().toISOString(), profiles: { display_name: ctx.profile.display_name } });
+            localStorage.setItem('ph_comments', JSON.stringify(cached));
+            renderComments(cached[id]);
+            return;
+          }
+          throw r.error;
+        }
+        await loadComments();
+      } catch (err) {
+        console.error(err);
+        PH.toast('Komentar gagal dikirim.', 'error');
+      } finally {
+        commentInput.disabled = false;
+      }
+    });
   }
 
   load();

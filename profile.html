@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Profil — Pemuda Hijrah</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="header-slot"></div>
+
+  <main class="container narrow">
+    <div id="profile-status"></div>
+    <section id="profile-card" class="panel profile-card" hidden>
+      <div class="profile-header">
+        <div id="avatar" class="profile-avatar"></div>
+        <div>
+          <h1 id="profile-name"></h1>
+          <p id="profile-role" class="muted"></p>
+        </div>
+      </div>
+
+      <div class="profile-meta">
+        <div><span>Email</span><strong id="profile-email"></strong></div>
+        <div><span>Bergabung</span><strong id="profile-joined"></strong></div>
+      </div>
+
+      <div class="field">
+        <label for="bio">Bio</label>
+        <textarea id="bio" maxlength="200" rows="4" placeholder="Tulis bio singkat..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="display-name">Nama tampilan</label>
+        <input id="display-name" type="text" maxlength="30" placeholder="Nama tampilan">
+      </div>
+
+      <div class="actions">
+        <button id="save-profile" class="btn btn-primary" type="button">Simpan profil</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

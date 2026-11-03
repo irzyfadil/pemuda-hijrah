@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b1220">
+  <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="noindex, nofollow">
   <title>Masuk — Pemuda Hijrah</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="auth-page">
   <main class="auth-wrap">
-    <div class="auth-brand">
+    <section class="auth-brand">
       <div class="brand-mark">PH</div>
       <h1>Pemuda Hijrah</h1>
       <p>Galeri kenangan khusus anggota.</p>
-    </div>
+    </section>
 
-    <div class="panel">
-      <div class="tabs" role="tablist">
+    <div class="panel auth-panel">
+      <div class="tabs" role="tablist" aria-label="Opsi masuk">
         <button id="tab-login" class="tab" role="tab" aria-selected="true" type="button">Masuk</button>
         <button id="tab-signup" class="tab" role="tab" aria-selected="false" type="button">Daftar</button>
       </div>
@@ -31,15 +31,19 @@
           <label for="login-password">Kata sandi</label>
           <input id="login-password" type="password" autocomplete="current-password" required>
         </div>
+        <div class="auth-meta">
+          <button id="login-google" class="btn btn-ghost btn-small" type="button">Lanjut dengan Google</button>
+          <button id="forgot-password" class="link-btn" type="button">Lupa sandi?</button>
+        </div>
         <p id="login-msg" class="form-error" role="alert"></p>
-        <button id="login-btn" class="btn btn-block" type="submit">Masuk</button>
+        <button id="login-btn" class="btn btn-primary btn-block" type="submit">Masuk</button>
       </form>
 
       <form id="form-signup" novalidate hidden>
         <div class="field">
           <label for="su-name">Nama panggilan</label>
           <input id="su-name" type="text" autocomplete="nickname" maxlength="30" required>
-          <span class="hint">Nama ini tampil di setiap foto yang kamu unggah (2–30 huruf).</span>
+          <span class="hint">Nama ini tampil di setiap foto yang kamu unggah.</span>
         </div>
         <div class="field">
           <label for="su-email">Email</label>
@@ -56,7 +60,7 @@
           <span class="hint">Tanyakan kode ini kepada admin grup.</span>
         </div>
         <p id="signup-msg" class="form-error" role="alert"></p>
-        <button id="signup-btn" class="btn btn-block" type="submit">Buat akun</button>
+        <button id="signup-btn" class="btn btn-primary btn-block" type="submit">Buat akun</button>
       </form>
     </div>
   </main>

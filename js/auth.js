@@ -4,13 +4,14 @@
 
   if (!PH.sb) { PH.showSetupNotice(); return; }
 
-  // Sudah login? langsung ke beranda.
-  if (await PH.getSession()) { location.replace('index.html'); return; }
+  if (await PH.getSession()) { location.replace('feed.html'); return; }
 
   var tabLogin = document.getElementById('tab-login');
   var tabSignup = document.getElementById('tab-signup');
   var formLogin = document.getElementById('form-login');
   var formSignup = document.getElementById('form-signup');
+  var googleBtn = document.getElementById('login-google');
+  var forgotBtn = document.getElementById('forgot-password');
 
   function selectTab(which) {
     var isLogin = which === 'login';
@@ -18,7 +19,15 @@
     tabSignup.setAttribute('aria-selected', String(!isLogin));
     formLogin.hidden = !isLogin;
     formSignup.hidden = isLogin;
+
+    if (which === 'signup') {
+      window.location.hash = 'register';
+    } else {
+      window.location.hash = '';
+    }
   }
+
+  if (window.location.hash === '#register') selectTab('signup');
   tabLogin.addEventListener('click', function () { selectTab('login'); });
   tabSignup.addEventListener('click', function () { selectTab('signup'); });
 
@@ -34,7 +43,44 @@
     return 'Terjadi kesalahan. Coba lagi sebentar.';
   }
 
-  // ----- Masuk -----
+  googleBtn.addEventListener('click', async function () {
+    googleBtn.disabled = true;
+    googleBtn.textContent = 'Membuka Google…';
+    try {
+      var r = await PH.sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + '/feed.html' } });
+      if (r.error) throw r.error;
+    } catch (err) {
+      console.error(err);
+      var msg = document.getElementById('login-msg');
+      msg.textContent = friendlyError(err);
+      googleBtn.disabled = false;
+      googleBtn.textContent = 'Lanjut dengan Google';
+    }
+  });
+
+  forgotBtn.addEventListener('click', async function () {
+    var email = document.getElementById('login-email').value.trim();
+    var msg = document.getElementById('login-msg');
+    if (!email) {
+      msg.textContent = 'Masukkan email untuk mengirim tautan pemulihan.';
+      return;
+    }
+    forgotBtn.disabled = true;
+    forgotBtn.textContent = 'Mengirim…';
+    try {
+      var r = await PH.sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/masuk.html' });
+      if (r.error) throw r.error;
+      msg.className = 'form-ok';
+      msg.textContent = 'Tautan pemulihan sudah dikirim ke email Anda.';
+    } catch (err) {
+      msg.className = 'form-error';
+      msg.textContent = friendlyError(err);
+    } finally {
+      forgotBtn.disabled = false;
+      forgotBtn.textContent = 'Lupa sandi?';
+    }
+  });
+
   formLogin.addEventListener('submit', async function (e) {
     e.preventDefault();
     var msg = document.getElementById('login-msg');
@@ -53,10 +99,9 @@
       btn.textContent = 'Masuk';
       return;
     }
-    location.replace('index.html');
+    location.replace('feed.html');
   });
 
-  // ----- Daftar -----
   formSignup.addEventListener('submit', async function (e) {
     e.preventDefault();
     var msg = document.getElementById('signup-msg');
@@ -86,7 +131,7 @@
     if (r.error) { msg.textContent = friendlyError(r.error); return; }
 
     if (r.data && r.data.session) {
-      location.replace('index.html');
+      location.replace('feed.html');
     } else {
       msg.className = 'form-ok';
       msg.textContent = 'Akun dibuat. Cek email untuk konfirmasi, lalu kembali dan masuk.';

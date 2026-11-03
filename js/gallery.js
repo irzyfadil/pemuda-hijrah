@@ -4,7 +4,7 @@
 
   var ctx = await PH.requireAuth();
   if (!ctx) return;
-  PH.renderHeader(ctx, 'home');
+  PH.renderHeader(ctx, 'feed');
   document.getElementById('fab').hidden = false;
 
   var PAGE_SIZE = 24;
@@ -52,7 +52,7 @@
         statusBox.appendChild(PH.el('div', { class: 'status' }, [
           PH.el('h2', { text: 'Belum ada kenangan' }),
           PH.el('p', { text: 'Jadilah yang pertama membagikan momen bersama teman-teman.' }),
-          PH.el('a', { class: 'btn', href: 'upload.html', text: 'Unggah foto pertama' })
+          PH.el('a', { class: 'btn btn-primary', href: 'upload.html', text: 'Unggah foto pertama' })
         ]));
         return;
       }

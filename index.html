@@ -3,30 +3,54 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b1220">
+  <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="noindex, nofollow">
-  <title>Pemuda Hijrah — Galeri Kenangan</title>
+  <title>Pemuda Hijrah</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <div id="header-slot"></div>
+<body class="welcome-page">
+  <header class="landing-header">
+    <div class="brand-wrap">
+      <div class="brand-mark">PH</div>
+      <span>Pemuda Hijrah</span>
+    </div>
+    <nav class="landing-nav">
+      <a href="masuk.html">Masuk</a>
+      <a href="masuk.html#register" class="btn btn-primary btn-small">Get Started</a>
+    </nav>
+  </header>
 
-  <main class="container">
-    <section class="hero">
-      <h1>Kenangan Kita</h1>
-      <p>Setiap momen bersama, tersimpan di satu tempat.</p>
+  <main class="welcome-shell">
+    <section class="hero-panel">
+      <div class="hero-copy">
+        <p class="eyebrow">Komunitas • Kenangan • Koneksi</p>
+        <h1>PEMUDA<br>HIJRAH</h1>
+        <p class="lead">Tempat berbagi momen, menjaga kenangan, dan tetap terhubung dengan teman satu komunitas.</p>
+        <div class="cta-row">
+          <a href="masuk.html" class="btn btn-primary">LOGIN</a>
+          <a href="masuk.html#register" class="btn btn-secondary">GET STARTED</a>
+        </div>
+        <ul class="feature-list">
+          <li>Galeri foto privat komunitas</li>
+          <li>Profil anggota dan cerita momen</li>
+          <li>Komunikasi dan meeting internal</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual" aria-label="Galeri komunitas Pemuda Hijrah">
+        <div class="photo-card photo-card-lg">
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80" alt="Foto komunitas Pemuda Hijrah">
+        </div>
+        <div class="floating-badge badge-top">
+          <strong>500+</strong>
+          <span>Kenangan</span>
+        </div>
+        <div class="floating-badge badge-bottom">
+          <strong>24/7</strong>
+          <span>Komunitas</span>
+        </div>
+      </div>
     </section>
-
-    <div id="status"></div>
-    <div id="grid" class="grid"></div>
-    <div class="center"><button id="more" class="btn btn-ghost" type="button" hidden>Muat lebih banyak</button></div>
   </main>
-
-  <a id="fab" class="fab" href="upload.html" aria-label="Unggah foto" hidden>+</a>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/gallery.js"></script>
 </body>
 </html>

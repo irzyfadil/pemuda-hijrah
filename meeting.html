@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Meeting — Pemuda Hijrah</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="header-slot"></div>
+
+  <main class="container narrow">
+    <section class="section-head">
+      <div>
+        <p class="eyebrow">Komunikasi</p>
+        <h1>MEETING</h1>
+      </div>
+    </section>
+
+    <div class="meeting-layout">
+      <aside class="panel meeting-sidebar">
+        <div class="toolbar-row">
+          <input id="member-search" type="search" placeholder="Cari anggota..." aria-label="Cari anggota">
+        </div>
+        <div id="member-list" class="member-list"></div>
+      </aside>
+
+      <section class="panel meeting-chat">
+        <div id="thread-header" class="thread-header"></div>
+        <div id="message-list" class="message-list"></div>
+        <form id="message-form" class="message-form">
+          <input id="message-input" type="text" maxlength="500" placeholder="Ketik pesan..." aria-label="Pesan">
+          <button type="submit" class="btn btn-primary">Kirim</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/meeting.js"></script>
+</body>
+</html>
