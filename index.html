@@ -3,30 +3,46 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b1220">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Pemuda Hijrah — Galeri Kenangan</title>
+  <meta name="theme-color" content="#1d4ed8">
+  <meta name="description" content="Pemuda Hijrah — galeri kenangan khusus anggota.">
+  <title>Pemuda Hijrah — Selamat Datang</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <div id="header-slot"></div>
+<body class="welcome">
+  <main class="hero-wrap">
+    <div class="hero-top">
+      <a class="brand" href="index.html" aria-label="Pemuda Hijrah">
+        <span class="brand-mark">PH</span>
+        <span class="brand-name">Pemuda Hijrah</span>
+      </a>
+    </div>
 
-  <main class="container">
-    <section class="hero">
-      <h1>Kenangan Kita</h1>
-      <p>Setiap momen bersama, tersimpan di satu tempat.</p>
+    <section class="welcome-hero">
+      <p class="eyebrow rise d1">Galeri kenangan</p>
+      <h1 class="hero-title rise d1">PEMUDA HIJRAH</h1>
+      <p class="hero-sub rise d2">Tempat kita menyimpan dan berbagi momen bersama.</p>
+
+      <figure class="team rise d3" aria-label="Foto bersama anggota">
+        <div class="team-ph" aria-hidden="true">PH</div>
+        <img id="team-img" alt="Foto bersama anggota Pemuda Hijrah" hidden>
+        <figcaption>TEKAJEH SOLIDD</figcaption>
+      </figure>
+
+      <div class="rise d4">
+        <a id="cta" class="btn btn-light btn-big" href="masuk.html">Login / Mulai</a>
+      </div>
+
+      <ul class="points rise d4">
+        <li>Foto kenangan</li>
+        <li>Cerita &amp; caption</li>
+        <li>Khusus anggota</li>
+      </ul>
     </section>
-
-    <div id="status"></div>
-    <div id="grid" class="grid"></div>
-    <div class="center"><button id="more" class="btn btn-ghost" type="button" hidden>Muat lebih banyak</button></div>
   </main>
-
-  <a id="fab" class="fab" href="upload.html" aria-label="Unggah foto" hidden>+</a>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/app.js"></script>
-  <script src="js/gallery.js"></script>
+  <script src="js/welcome.js"></script>
 </body>
 </html>

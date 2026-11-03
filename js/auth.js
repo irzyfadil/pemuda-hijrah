@@ -5,7 +5,7 @@
   if (!PH.sb) { PH.showSetupNotice(); return; }
 
   // Sudah login? langsung ke beranda.
-  if (await PH.getSession()) { location.replace('index.html'); return; }
+  if (await PH.getSession()) { location.replace('footage.html'); return; }
 
   var tabLogin = document.getElementById('tab-login');
   var tabSignup = document.getElementById('tab-signup');
@@ -53,7 +53,7 @@
       btn.textContent = 'Masuk';
       return;
     }
-    location.replace('index.html');
+    location.replace('footage.html');
   });
 
   // ----- Daftar -----
@@ -86,7 +86,7 @@
     if (r.error) { msg.textContent = friendlyError(r.error); return; }
 
     if (r.data && r.data.session) {
-      location.replace('index.html');
+      location.replace('footage.html');
     } else {
       msg.className = 'form-ok';
       msg.textContent = 'Akun dibuat. Cek email untuk konfirmasi, lalu kembali dan masuk.';

@@ -143,7 +143,7 @@
       if (rm.error) console.warn('File foto gagal dihapus dari penyimpanan:', rm.error);
 
       PH.toast('Kenangan dihapus.', 'success');
-      location.replace('index.html');
+      location.replace('footage.html');
     } catch (err) {
       console.error(err);
       PH.toast('Gagal menghapus. Coba lagi.', 'error');

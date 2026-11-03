@@ -4,7 +4,7 @@
 
   var ctx = await PH.requireAuth();
   if (!ctx) return;
-  PH.renderHeader(ctx, 'home');
+  PH.renderHeader(ctx, "home");
   document.getElementById('fab').hidden = false;
 
   var PAGE_SIZE = 24;

@@ -28,8 +28,8 @@ jobs:
       - name: Siapkan folder website
         run: |
           mkdir _site
-          cp index.html masuk.html upload.html foto.html _site/
-          cp -r css js _site/
+          cp index.html footage.html masuk.html upload.html foto.html _site/
+          cp -r css js assets _site/
           touch _site/.nojekyll
 
       - uses: actions/configure-pages@v5

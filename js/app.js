@@ -127,20 +127,43 @@
     var slot = document.getElementById('header-slot');
     if (!slot) return;
     slot.textContent = '';
+    var name = ctx.profile.display_name;
+    var roleText = ctx.profile.role === 'admin' ? 'Admin' : 'Anggota';
+
     var logout = el('button', { class: 'btn btn-ghost btn-small', type: 'button', text: 'Keluar' });
     logout.addEventListener('click', async function () {
       await sb.auth.signOut();
       location.replace('masuk.html');
     });
+
+    var avatar = el('button', {
+      class: 'avatar', type: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false',
+      'aria-label': 'Menu akun ' + name, text: name.charAt(0).toUpperCase()
+    });
+    var menu = el('div', { class: 'menu', role: 'menu', hidden: true }, [
+      el('div', { class: 'menu-name', text: name }),
+      el('div', { class: 'menu-role', text: roleText }),
+      logout
+    ]);
+    function setMenu(open) {
+      menu.hidden = !open;
+      avatar.setAttribute('aria-expanded', String(open));
+    }
+    avatar.addEventListener('click', function (e) { e.stopPropagation(); setMenu(menu.hidden); });
+    document.addEventListener('click', function (e) { if (!menu.contains(e.target)) setMenu(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+
     slot.appendChild(el('header', { class: 'topbar' }, [
-      el('a', { class: 'brand', href: 'index.html', 'aria-label': 'Pemuda Hijrah, ke beranda' }, [
+      el('a', { class: 'brand', href: 'footage.html', 'aria-label': 'Pemuda Hijrah, ke Footage' }, [
         el('span', { class: 'brand-mark', text: 'PH' }),
         el('span', { class: 'brand-name', text: 'Pemuda Hijrah' })
       ]),
-      el('nav', { class: 'nav' }, [
-        el('span', { class: 'nav-user', text: ctx.profile.display_name + (ctx.profile.role === 'admin' ? ' (admin)' : '') }),
+      el('nav', { class: 'nav-left', 'aria-label': 'Menu utama' }, [
+        el('a', { class: 'navlink', href: 'footage.html', text: 'FOOTAGE', 'aria-current': active === 'home' ? 'page' : null })
+      ]),
+      el('div', { class: 'nav-right' }, [
         active === 'upload' ? null : el('a', { class: 'btn btn-small', href: 'upload.html', text: '+ Unggah' }),
-        logout
+        el('div', { class: 'profile' }, [avatar, menu])
       ])
     ]));
   }
