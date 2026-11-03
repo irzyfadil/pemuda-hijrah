@@ -1,0 +1,8 @@
+# Jangan pernah menyimpan rahasia di repository
+.env
+.env.*
+*.pem
+*.key
+node_modules/
+_site/
+.DS_Store

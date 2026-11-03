@@ -1,0 +1,42 @@
+# Menayangkan website ke GitHub Pages setiap ada perubahan di cabang "main".
+# Hanya file website yang ditayangkan (folder docs/ dan supabase/ TIDAK ikut).
+name: Tayangkan ke GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Siapkan folder website
+        run: |
+          mkdir _site
+          cp index.html masuk.html upload.html foto.html _site/
+          cp -r css js _site/
+          touch _site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
